@@ -8,7 +8,7 @@ Built with [mcp-use](https://github.com/mcp-use/mcp-use).
 
 ## Run
 
-You need Node 22 and a working checkout of hands. Its README covers the Python setup.
+You need Node 22.22 or newer and a working checkout of hands. Its README covers the Python setup.
 
 From the hands checkout, start the demo app that the capabilities run against:
 
@@ -33,6 +33,6 @@ Open http://localhost:3000/mcp/inspector and call a tool. Member 10041 has a sav
 
 A tool call runs `hands invoke` and returns its JSON result as structured content. A run that ends in `failure` sets `isError`.
 
-Runs have no operator and no grant for steps that change data, so `legacycu__open_subaccount` stops at the hands policy and returns a `POLICY_BLOCKED` failure.
+Runs have no operator and no grant for steps that change data, so `legacycu__open_subaccount` stops at the hands policy and returns a `POLICY_BLOCKED` failure. Both demo capabilities are drafts. They run here because steps that change data stop at the policy anyway.
 
-Each run writes its screenshots and step log under `evidence/` in this folder. The result includes the path.
+Each run writes its screenshots and step log under `evidence/` in the folder the server was started from. The result includes the path.
