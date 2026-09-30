@@ -8,7 +8,7 @@ Built with [mcp-use](https://github.com/mcp-use/mcp-use).
 
 ## Run
 
-You need Node 22.22 or newer and a working checkout of hands. Its README covers the Python setup.
+You need Node 22.22.2 or newer and a working checkout of hands. Its README covers the Python setup.
 
 From the hands checkout, start the demo app that the capabilities run against:
 
@@ -25,14 +25,14 @@ npm run dev
 
 `HANDS_DIR` is the path to the hands checkout (default `../computer-use-automation`). `HANDS_PYTHON` is the interpreter (default `python`). Point it at the venv's python if the venv is not active.
 
-Open http://localhost:3000/mcp/inspector and call a tool. Member 10041 has a savings balance of 15.02. Member 99999 does not exist. That run returns a `MEMBER_NOT_FOUND` outcome and `isError` stays false.
+Open http://localhost:3000/mcp/inspector and call a tool. Member 10041 has a savings balance of 15.02. Member 99999 does not exist and comes back as a `MEMBER_NOT_FOUND` outcome with `isError` false.
 
 ## How it works
 
-`hands catalog` prints every capability as a tool definition with a JSON Schema for its inputs. The server turns each schema into a zod schema, so a bad member number is rejected before any browser starts.
+`hands catalog` prints every capability as a tool definition with a JSON Schema for its inputs. The server turns each schema into a zod schema, so a bad member number is rejected before any browser starts. The catalog is read once. Restart the server after recording a new capability or a new version of one.
 
-A tool call runs `hands invoke` and returns its JSON result as structured content. A run that ends in `failure` sets `isError`.
+A tool call runs `hands invoke` and returns its JSON result as structured content. A run that ends in `failure` sets `isError`. Cancelling the call stops the run, and a run is killed after 5 minutes.
 
-Runs have no operator and no grant for steps that change data, so `legacycu__open_subaccount` stops at the hands policy and returns a `POLICY_BLOCKED` failure. Both demo capabilities are drafts. They run here because steps that change data stop at the policy anyway.
+Runs have no operator and no grant for mutating steps, so `legacycu__open_subaccount` stops at the hands policy and returns a `POLICY_BLOCKED` failure. Both demo capabilities are drafts. They run here without `--require-approved` because that policy stop covers the only step that changes data.
 
 Each run writes its screenshots and step log under `evidence/` in the folder the server was started from. The result includes the path.
