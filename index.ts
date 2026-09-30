@@ -5,12 +5,12 @@ import { MCPServer } from "mcp-use";
 import { z } from "zod";
 
 const run = promisify(execFile);
-const cwd = process.env.HANDS_DIR ?? "../computer-use-automation";
+const handsDir = process.env.HANDS_DIR ?? "../computer-use-automation";
 const python = process.env.HANDS_PYTHON ?? "python";
 
 // a failed run exits 1 but still prints its result
 const hands = (...args: string[]) =>
-  run(python, ["-m", "hands.cli", ...args], { cwd }).then(
+  run(python, ["-m", "hands.cli", ...args], { cwd: handsDir }).then(
     (r) => r.stdout,
     (e) => e.stdout || Promise.reject(e)
   );
@@ -27,7 +27,7 @@ for (const tool of JSON.parse(await hands("catalog"))) {
       name: tool.name,
       description: tool.description,
       inputSchema: z.fromJSONSchema(tool.input_schema),
-      annotations: { readOnlyHint: tool.description.endsWith("Risk: safe.") },
+      annotations: { readOnlyHint: tool.risk === "safe" },
     },
     async (args) => {
       const out = await hands(

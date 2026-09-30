@@ -33,6 +33,6 @@ Open http://localhost:3000/mcp/inspector and call a tool. Member 10041 has a sav
 
 A tool call runs `hands invoke` and returns its JSON result as structured content. A run that ends in `failure` sets `isError`.
 
-Runs have no operator and no grant for steps that change data. `legacycu__open_subaccount` therefore stops at the hands policy and returns a `POLICY_BLOCKED` failure.
+Runs have no operator and no grant for steps that change data, so `legacycu__open_subaccount` stops at the hands policy and returns a `POLICY_BLOCKED` failure.
 
-Each run writes its screenshots and step log under `evidence/` in this folder. The result carries the path.
+Each run writes its screenshots and step log under `evidence/` in this folder. The result includes the path.
